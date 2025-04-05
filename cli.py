@@ -14,6 +14,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger("arbitrage-cli")
 
+
 @click.group()
 @click.option("--verbose", "-v", is_flag=True, help="Enable verbose output")
 @click.pass_context
@@ -22,7 +23,7 @@ def cli(ctx, verbose):
     # Store verbose flag in the Click context instead of a global variable
     ctx.ensure_object(dict)
     ctx.obj["VERBOSE"] = verbose
-    
+
     if verbose:
         logging.getLogger().setLevel(logging.DEBUG)
         logger.debug("Debug logging enabled")
@@ -146,26 +147,40 @@ def scrape(ctx, amazon_url, amazon_name, static, save, snapshot_name):
         except (TypeError, AttributeError) as e:
             # Type-related errors
             click.echo(f"Type error: {str(e)}")
-            click.echo("This may be due to unexpected data formats in the scraped items.")
+            click.echo(
+                "This may be due to unexpected data formats in the scraped items."
+            )
         except ImportError as e:
             # Missing module errors
             click.echo(f"Import error: {str(e)}")
-            click.echo("This may be due to missing dependencies. Try installing required packages.")
-        except Exception as e: # pylint: disable=broad-exception-caught
+            click.echo(
+                "This may be due to missing dependencies. Try installing required packages."
+            )
+        except Exception as e:  # pylint: disable=broad-exception-caught
             error_str = str(e).lower()
-            
-            if "network" in error_str or "connection" in error_str or "timeout" in error_str:
+
+            if (
+                "network" in error_str
+                or "connection" in error_str
+                or "timeout" in error_str
+            ):
                 click.echo(f"Network error: {str(e)}")
-                click.echo("This appears to be a network-related error. Check your internet connection.")
+                click.echo(
+                    "This appears to be a network-related error. Check your internet connection."
+                )
             elif "permission" in error_str:
                 click.echo(f"Permission error: {str(e)}")
-                click.echo("This appears to be a permission error. Check file/directory access rights.")
+                click.echo(
+                    "This appears to be a permission error. Check file/directory access rights."
+                )
             elif "memory" in error_str:
                 click.echo(f"Memory error: {str(e)}")
-                click.echo("This appears to be a memory-related error. The operation may require more resources.")
+                click.echo(
+                    "This appears to be a memory-related error. The operation may require more resources."
+                )
             else:
                 click.echo(f"Unexpected error: {str(e)}")
-            
+
             # Always show traceback in verbose mode
             if ctx.obj["VERBOSE"]:
                 click.echo(traceback.format_exc())
@@ -208,7 +223,15 @@ def scrape(ctx, amazon_url, amazon_name, static, save, snapshot_name):
 @click.option("--output", "-o", type=click.Path(), help="Save results to file")
 @click.pass_context
 def detect(
-    ctx, amazon_url, amazon_name, static, snapshot_id, latest, min_profit, format_type, output
+    ctx,
+    amazon_url,
+    amazon_name,
+    static,
+    snapshot_id,
+    latest,
+    min_profit,
+    format_type,
+    output,
 ):
     """Detect arbitrage opportunities between Amazon and static data.
 
@@ -254,7 +277,9 @@ def detect(
             if latest:
                 from core.database.models import Snapshot
 
-                latest_snapshot = db.query(Snapshot).order_by(Snapshot.timestamp.desc()).first()
+                latest_snapshot = (
+                    db.query(Snapshot).order_by(Snapshot.timestamp.desc()).first()
+                )
                 if latest_snapshot:
                     snapshot_id = latest_snapshot.id
                     description = latest_snapshot.description or "No description"
@@ -308,13 +333,15 @@ def detect(
             if ctx.obj["VERBOSE"]:
                 click.echo(traceback.format_exc())
             return
-        except Exception as e: # pylint: disable=broad-exception-caught
+        except Exception as e:  # pylint: disable=broad-exception-caught
             if "HTTPError" in str(type(e)):
                 click.echo(f"HTTP error when accessing external resources: {str(e)}")
             elif "JSONDecodeError" in str(type(e)):
                 click.echo(f"Error parsing JSON data: {str(e)}")
             elif "ConnectionError" in str(type(e)):
-                click.echo(f"Connection error - could not reach external resource: {str(e)}")
+                click.echo(
+                    f"Connection error - could not reach external resource: {str(e)}"
+                )
             elif "Timeout" in str(type(e)):
                 click.echo(f"Request timed out: {str(e)}")
             elif "IO" in str(type(e)):
@@ -322,10 +349,12 @@ def detect(
             elif "Parse" in str(type(e)) or "Syntax" in str(type(e)):
                 click.echo(f"Error parsing data: {str(e)}")
             elif "Attribute" in str(type(e)):
-                click.echo(f"Object attribute error - likely a data structure mismatch: {str(e)}")
+                click.echo(
+                    f"Object attribute error - likely a data structure mismatch: {str(e)}"
+                )
             else:
                 click.echo(f"Error retrieving data from database: {str(e)}")
-            
+
             if ctx.obj["VERBOSE"]:
                 click.echo(traceback.format_exc())
             return
@@ -510,30 +539,38 @@ def find(
             if ctx.obj["VERBOSE"]:
                 click.echo(traceback.format_exc())
             return
-        except Exception as e: # pylint: disable=broad-exception-caught
+        except Exception as e:  # pylint: disable=broad-exception-caught
             # Import error analysis utilities
             from importlib.util import find_spec
-            
+
             # Check if the error is related to missing modules
             if str(e).startswith("No module named"):
-                module_name = str(e).split("'")[1] if "'" in str(e) else str(e).split("named ")[1]
+                module_name = (
+                    str(e).split("'")[1] if "'" in str(e) else str(e).split("named ")[1]
+                )
                 if find_spec(module_name):
-                    click.echo(f"Module '{module_name}' is installed but could not be imported correctly.")
+                    click.echo(
+                        f"Module '{module_name}' is installed but could not be imported correctly."
+                    )
                 else:
-                    click.echo(f"Required module '{module_name}' is not installed. Try installing it with 'pip install {module_name}'.")
-            
+                    click.echo(
+                        f"Required module '{module_name}' is not installed. Try installing it with 'pip install {module_name}'."
+                    )
+
             # Check for common database connection issues
             elif "connection" in str(e).lower() and "database" in str(e).lower():
-                click.echo("Database connection error. Check your database server is running and credentials are correct.")
-            
+                click.echo(
+                    "Database connection error. Check your database server is running and credentials are correct."
+                )
+
             # Check for common permission issues
             elif "permission" in str(e).lower():
                 click.echo("Permission denied. Check file/database access rights.")
-            
+
             # Default error message
             else:
                 click.echo(f"Error retrieving data from database: {str(e)}")
-            
+
             if ctx.obj["VERBOSE"]:
                 click.echo(traceback.format_exc())
             return
@@ -618,10 +655,16 @@ def find(
             click.echo(f"Value error: {str(e)}")
             if ctx.obj["VERBOSE"]:
                 click.echo(traceback.format_exc())
-        except Exception as e: # pylint: disable=broad-exception-caught
-            if "json" in str(e).lower() or "serial" in str(e).lower() or "dump" in str(e).lower():
+        except Exception as e:  # pylint: disable=broad-exception-caught
+            if (
+                "json" in str(e).lower()
+                or "serial" in str(e).lower()
+                or "dump" in str(e).lower()
+            ):
                 click.echo(f"Data serialization error: {str(e)}")
-                click.echo("The opportunity data might contain types that can't be saved directly.")
+                click.echo(
+                    "The opportunity data might contain types that can't be saved directly."
+                )
             # Memory issues
             elif "memory" in str(e).lower():
                 click.echo(f"Memory error when saving data: {str(e)}")
@@ -629,11 +672,13 @@ def find(
             # Handle potential schema issues
             elif "schema" in str(e).lower() or "column" in str(e).lower():
                 click.echo(f"Database schema error: {str(e)}")
-                click.echo("The database structure might not match the required schema. Try running 'init' command.")
+                click.echo(
+                    "The database structure might not match the required schema. Try running 'init' command."
+                )
             # Other errors
             else:
                 click.echo(f"Error saving opportunities to database: {str(e)}")
-            
+
             if ctx.obj["VERBOSE"]:
                 click.echo(traceback.format_exc())
         finally:
@@ -770,7 +815,7 @@ def history(
                 "profit_percent": opp.profit_percent,
                 "timestamp": (
                     opp.timestamp.strftime("%Y-%m-%d %H:%M:%S")
-                    if format_type == "csv" or format_type == "text" 
+                    if format_type == "csv" or format_type == "text"
                     else opp.timestamp
                 ),
             }
@@ -778,7 +823,9 @@ def history(
         ]
 
         # Add timestamp to the result
-        result_output = format_opportunities(opp_dicts, format_type, include_timestamp=True)
+        result_output = format_opportunities(
+            opp_dicts, format_type, include_timestamp=True
+        )
 
         # Output to file or console
         if output:
@@ -815,12 +862,16 @@ def history(
             click.echo(traceback.format_exc())
     except AttributeError as e:
         click.echo(f"Attribute error: {str(e)}")
-        click.echo("This may be due to accessing a property that doesn't exist on an object.")
+        click.echo(
+            "This may be due to accessing a property that doesn't exist on an object."
+        )
         if ctx.obj["VERBOSE"]:
             click.echo(traceback.format_exc())
     except ImportError as e:
         click.echo(f"Import error: {str(e)}")
-        click.echo("This may be due to missing dependencies. Try installing required packages.")
+        click.echo(
+            "This may be due to missing dependencies. Try installing required packages."
+        )
         if ctx.obj["VERBOSE"]:
             click.echo(traceback.format_exc())
     except LookupError as e:
