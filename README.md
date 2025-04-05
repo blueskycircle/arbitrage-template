@@ -100,6 +100,8 @@ python cli.py history   # View historical arbitrage opportunities
 
 ### Command: init
 
+![Command: init demo](assets/arbitrage-cli-database.gif)
+
 Initializes the database with required tables.
 
 ```bash
@@ -107,6 +109,8 @@ python cli.py init
 ```
 
 ### Command: scrape
+
+![Command: scrape demo](assets/arbitrage-cli-scrape.gif)
 
 Collects product data from Amazon and/or static sources.
 
@@ -138,6 +142,8 @@ python cli.py scrape -a "https://www.amazon.co.uk/dp/B0DGJ746HN?th=1" -a "https:
 
 ### Command: detect
 
+![Command: detect demo](assets/arbitrage-cli-detect.gif)
+
 Analyzes product data to find arbitrage opportunities.
 
 ```bash
@@ -166,6 +172,8 @@ python cli.py detect -a "https://www.amazon.co.uk/dp/B0DGJ746HN?th=1" -p 10.0 -f
 
 ### Command: find
 
+![Command: find demo](assets/arbitrage-cli-find.gif)
+
 Similar to detect but automatically saves opportunities to the database.
 
 ```bash
@@ -187,6 +195,8 @@ python cli.py find --latest --no-save
 ```
 
 ### Command: history
+
+![Command: history demo](assets/arbitrage-cli-history.gif)
 
 View historical arbitrage opportunities from the database.
 
@@ -233,6 +243,8 @@ python cli.py detect --latest -f csv -o results.csv
 ## 🌐 REST API
 
 The project also includes a FastAPI-based REST API that provides the same functionality through HTTP endpoints.
+
+![REST API demo](assets/arbitrage-api.gif)
 
 ### Starting the API Server
 
