@@ -2,7 +2,7 @@
 
 [![Python application test with Github Actions](https://github.com/blueskycircle/arbitrage-template/actions/workflows/main.yml/badge.svg)](https://github.com/blueskycircle/arbitrage-template/actions/workflows/main.yml)
 
-A comprehensive tool for finding arbitrage opportunities between Amazon and static input (which could be swapped out). This project scrapes product data, stores it in a database, and analyzes price differences to identify potential profit opportunities.
+A comprehensive template tool for finding arbitrage opportunities between Amazon and static input (which could be swapped out). This project scrapes product data, stores it in a database, and analyzes price differences to identify potential profit opportunities.
 
 ## 📋 Table of Contents
 - [Overview](#-overview)
