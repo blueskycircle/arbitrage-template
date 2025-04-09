@@ -43,7 +43,7 @@ This tool helps you identify price differences between products on Amazon and ot
 ### Prerequisites
 
 - Python 3.8+
-- MySQL/MariaDB (or compatible database)
+- MySQL
 
 ### Setup
 
