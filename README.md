@@ -4,7 +4,7 @@
 
 A comprehensive template tool for finding arbitrage opportunities between Amazon and static input (which can be swapped out). This project scrapes product data, stores it in a database, and analyzes price differences to identify potential profit opportunities.
 
-## 📋 Table of Contents
+## Table of Contents
 - [Overview](#-overview)
 - [Installation](#-installation)
   - [Prerequisites](#prerequisites)
@@ -27,7 +27,7 @@ A comprehensive template tool for finding arbitrage opportunities between Amazon
     - [Retrieving Items](#retrieving-items)
 - [Project Structure](#-project-structure)
 
-## 📋 Overview
+## Overview
 
 This tool helps you identify price differences between products on Amazon and other sources, allowing you to find arbitrage opportunities. Key features:
 
@@ -38,7 +38,7 @@ This tool helps you identify price differences between products on Amazon and ot
 - **Multiple output formats**: Table, text, and CSV output options
 - **CLI and API interfaces**: Command-line tool and REST API access
 
-## 🚀 Installation
+## Installation
 
 ### Prerequisites
 
@@ -80,7 +80,7 @@ This tool helps you identify price differences between products on Amazon and ot
    python cli.py init
    ```
 
-## 📊 Database Schema
+## Database Schema
 
 The application uses a relational database with the following key tables:
 
@@ -88,7 +88,7 @@ The application uses a relational database with the following key tables:
 - **Items**: Individual product data with source, name, price, and URL
 - **Opportunities**: Detected arbitrage opportunities with buy/sell details
 
-## 🖥️ Command-Line Interface (CLI)
+## Command-Line Interface (CLI)
 
 The tool provides a comprehensive CLI with five main commands:
 
@@ -242,7 +242,7 @@ Specify format with the `-f` option:
 python cli.py detect --latest -f csv -o results.csv
 ```
 
-## 🌐 REST API
+## REST API
 
 The project also includes a FastAPI-based REST API that provides the same functionality through HTTP endpoints.
 
@@ -371,7 +371,7 @@ curl -X GET "http://localhost:8000/items?snapshot_id=abcd1234&source=amazon&limi
 curl -X GET "http://localhost:8000/items?source=static"
 ```
 
-## 🔄 Project Structure
+## Project Structure
 
 ```
 .
